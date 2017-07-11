@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     //vars
     final ArrayList<String> arrayEvents = new ArrayList<>();
     final Long tsLong = System.currentTimeMillis()/1000;
+    String separated[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +36,24 @@ public class MainActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.lvThings); //the list
 
         String listOfFields = userPrefsClass.getData("list");             //get the list (empty?)
-        final String[] separated = listOfFields.split(",");                     //split the list (empty?)
 
+        if(!listOfFields.isEmpty()) {
+            separated = listOfFields.split(",");                     //split the list (empty?)
+        }
+        else{
+            String temporary = "Nada,nothing";
+            separated = temporary.split(",");
+        }
         final int size = separated.length;                                //cycle through list and display
-        for (int i = 0; i < size; i++)
-        {
-            String listItem = separated[i];
-            arrayEvents.add(i, listItem + " - " + convertToDate(userPrefsClass.getData(listItem)));
+
+        if (separated[0].equals("Nada")){
+            arrayEvents.add("Nothing to see here");
+        }
+        else {
+            for (int i = 0; i < size; i++) {
+                String listItem = separated[i];
+                arrayEvents.add(i, listItem + " - " + convertToDate(userPrefsClass.getData(listItem)));
+            }
         }
         updateListView(arrayEvents);
 
